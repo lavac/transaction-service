@@ -1,0 +1,38 @@
+management:
+  health:
+    defaults:
+      enabled: true
+    db:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+    health:
+      sensitive: false
+  endpoint:
+    health:
+      show-details: always
+      group:
+        app:
+          show-details: always
+          include: "*"
+          exclude: db
+        database:
+          show-details: always
+          include: db
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/banking
+    username: lavanyac
+server:
+  shutdown: graceful
