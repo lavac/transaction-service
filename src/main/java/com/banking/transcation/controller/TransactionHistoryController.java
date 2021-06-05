@@ -1,9 +1,9 @@
 package com.banking.transcation.controller;
 
-import com.banking.transcation.service.model.DateRange;
+import com.banking.transcation.model.DateRange;
 import com.banking.transcation.service.TransactionHistoryService;
-import com.banking.transcation.service.model.TransactionDetail;
-import com.banking.transcation.service.model.TransactionType;
+import com.banking.transcation.model.TransactionDetail;
+import com.banking.transcation.model.TransactionType;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;

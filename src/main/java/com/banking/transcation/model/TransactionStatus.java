@@ -1,4 +1,4 @@
-package com.banking.transcation.service.model;
+package com.banking.transcation.model;
 
 public enum TransactionStatus {
   PENDING,

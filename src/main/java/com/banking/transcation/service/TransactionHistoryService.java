@@ -2,10 +2,10 @@ package com.banking.transcation.service;
 
 import com.banking.transcation.exception.NoTransactionFoundException;
 import com.banking.transcation.repository.entity.TransactionDetailEntity;
-import com.banking.transcation.service.model.DateRange;
+import com.banking.transcation.model.DateRange;
 import com.banking.transcation.repository.TransactionHistoryRepository;
-import com.banking.transcation.service.model.TransactionDetail;
-import com.banking.transcation.service.model.TransactionType;
+import com.banking.transcation.model.TransactionDetail;
+import com.banking.transcation.model.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

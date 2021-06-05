@@ -1,9 +1,9 @@
 package com.banking.transcation.service;
 
 import com.banking.transcation.repository.entity.TransactionDetailEntity;
-import com.banking.transcation.service.model.TransactionDetail;
-import com.banking.transcation.service.model.TransactionStatus;
-import com.banking.transcation.service.model.TransactionType;
+import com.banking.transcation.model.TransactionDetail;
+import com.banking.transcation.model.TransactionStatus;
+import com.banking.transcation.model.TransactionType;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
