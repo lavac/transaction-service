@@ -9,11 +9,11 @@ CREATE TABLE transaction_detail (
     amount BIGINT NOT NULL,
     currency VARCHAR(20) NOT NULL,
     updated_balance BIGINT NOT NULL,
-    date_time TIMESTAMP NOT NULL
+    date_time BIGINT NOT NULL
 	);
 
 CREATE TABLE user_info (
-	id VARCHAR(255) PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	email_id VARCHAR(255) NOT NULL
+	id VARCHAR(256) PRIMARY KEY,
+	name VARCHAR(256) NOT NULL,
+	email_id VARCHAR(256) NOT NULL
 );

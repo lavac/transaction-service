@@ -5,12 +5,10 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 
 @Entity(name = "transaction_detail")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionDetailEntity {
@@ -48,10 +46,10 @@ public class TransactionDetailEntity {
   private String currency;
 
   @NonNull
-  @Column(name = "updatedBalance")
+  @Column(name = "updated_balance")
   private long updatedBalance;
 
   @NonNull
-  @Column(name = "dateTime")
-  private Timestamp dateTime;
+  @Column(name = "date_time")
+  private long dateTime;
 }
