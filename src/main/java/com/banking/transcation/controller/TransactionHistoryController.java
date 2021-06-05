@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 @Validated
 @RequestMapping("transactionHistory")
@@ -45,9 +46,10 @@ public class TransactionHistoryController {
       @RequestParam(name = "endDateTime", required = false) String endDateTime
   ) {
 
-    DateRange dateRange = DateRange.validateAndGetDateRange(startDateTime, endDateTime);
+    Optional<DateRange> dateRange = DateRange.validateAndGetDateRange(startDateTime, endDateTime);
 
-    List<TransactionDetail> transactionDetails = transactionHistoryService.get(userId, transactionType, dateRange);
+    List<TransactionDetail> transactionDetails = transactionHistoryService
+        .get(userId, transactionType, dateRange);
     return ResponseEntity.status(HttpStatus.OK).body(transactionDetails);
   }
 }

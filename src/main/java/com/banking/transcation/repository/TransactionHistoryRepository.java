@@ -20,4 +20,11 @@ public interface TransactionHistoryRepository  extends CrudRepository<Transactio
       @Param("endDateTime") long endDateTime,
       @Param("type") String type
   );
+
+  @Query("from transaction_detail where user_id = :userId and "
+      + "(:type is null or type = :type)"
+  )
+  List<TransactionDetailEntity> findByUserIdAndOptionalTypeFilter(
+      @Param("userId") String userId,
+      @Param("type") String valueInString);
 }

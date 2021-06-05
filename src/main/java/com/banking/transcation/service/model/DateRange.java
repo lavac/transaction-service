@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Builder
 @Data
@@ -23,9 +24,9 @@ public class DateRange {
     this.endDate = endDateInEpoch;
   }
 
-  public static DateRange validateAndGetDateRange(String startDateTime, String endDateTime) {
+  public static Optional<DateRange> validateAndGetDateRange(String startDateTime, String endDateTime) {
     if (startDateTime == null && endDateTime == null)
-      return new DateRange();
+      return Optional.empty();
 
     else if (startDateTime == null || endDateTime == null) {
       throw new InvalidDateRangeException("Either startDate or endDate cannot be null (both should be passed together or"
@@ -36,7 +37,7 @@ public class DateRange {
       long startDateInEpoch = LocalDateTime.parse(startDateTime, formatter).toEpochSecond(ZoneOffset.UTC);
       long endDateInEpoch = LocalDateTime.parse(endDateTime, formatter).toEpochSecond(ZoneOffset.UTC);
 
-      return new DateRange(startDateInEpoch, endDateInEpoch);
+      return Optional.of(new DateRange(startDateInEpoch, endDateInEpoch));
     }
   }
 }

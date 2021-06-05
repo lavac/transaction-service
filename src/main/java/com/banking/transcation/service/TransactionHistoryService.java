@@ -1,5 +1,6 @@
 package com.banking.transcation.service;
 
+import com.banking.transcation.repository.entity.TransactionDetailEntity;
 import com.banking.transcation.service.model.DateRange;
 import com.banking.transcation.repository.TransactionHistoryRepository;
 import com.banking.transcation.service.model.TransactionDetail;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,12 +21,22 @@ public class TransactionHistoryService {
   @Autowired
   TransactionDetailModelMapper transactionDetailModelMapper;
 
-  public List<TransactionDetail> get(String userId, TransactionType type, DateRange dateRange) {
-    return transactionHistoryRepository
-        .findByUserIdAndOptionalFilters(userId,
-            dateRange.getStartDate(),
-            dateRange.getEndDate(),
-            TransactionType.getValueInString(type))
+  public List<TransactionDetail> get(String userId, TransactionType type, Optional<DateRange> dateRange) {
+
+    List<TransactionDetailEntity> transactionDetails;
+
+    if (dateRange.isPresent()) {
+      transactionDetails = transactionHistoryRepository
+          .findByUserIdAndOptionalFilters(userId,
+              dateRange.get().getStartDate(),
+              dateRange.get().getEndDate(),
+              TransactionType.getValueInString(type));
+    } else {
+      transactionDetails = transactionHistoryRepository
+          .findByUserIdAndOptionalTypeFilter(userId,
+              TransactionType.getValueInString(type));
+    }
+    return transactionDetails
         .stream()
         .map(transactionDetailEntity ->
             transactionDetailModelMapper.map(transactionDetailEntity))
