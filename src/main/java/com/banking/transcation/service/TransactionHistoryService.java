@@ -1,5 +1,6 @@
 package com.banking.transcation.service;
 
+import com.banking.transcation.exception.NoTransactionFoundException;
 import com.banking.transcation.repository.entity.TransactionDetailEntity;
 import com.banking.transcation.service.model.DateRange;
 import com.banking.transcation.repository.TransactionHistoryRepository;
@@ -41,5 +42,11 @@ public class TransactionHistoryService {
         .map(transactionDetailEntity ->
             transactionDetailModelMapper.map(transactionDetailEntity))
         .collect(Collectors.toList());
+  }
+
+  public TransactionDetail findById(String id) {
+    TransactionDetailEntity transactionDetailEntity = transactionHistoryRepository.findById(id)
+        .orElseThrow(() -> new NoTransactionFoundException("Transaction is not found for given transaction id"));
+    return transactionDetailModelMapper.map(transactionDetailEntity);
   }
 }

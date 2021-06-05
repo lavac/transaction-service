@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -22,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Validated
-@RequestMapping("transactionHistory")
+@RequestMapping("transactions")
 @RestController
 public class TransactionHistoryController {
 
@@ -36,7 +33,7 @@ public class TransactionHistoryController {
       @ApiResponse(code = 404, message = "user not found"),
       @ApiResponse(code = 500, message = "Internal Server Error")
   })
-  ResponseEntity<List<TransactionDetail>> get(
+  public ResponseEntity<List<TransactionDetail>> get(
       @Valid
       @NotBlank(message = "userId cannot be null/empty")
       @Size(max = 256, message = "userId must be not more than 256 characters long")
@@ -51,5 +48,11 @@ public class TransactionHistoryController {
     List<TransactionDetail> transactionDetails = transactionHistoryService
         .get(userId, transactionType, dateRange);
     return ResponseEntity.status(HttpStatus.OK).body(transactionDetails);
+  }
+
+  @GetMapping(value = "/{id}", produces = "application/json")
+  public ResponseEntity<TransactionDetail> getById(@PathVariable String id) {
+    TransactionDetail transactionDetail = transactionHistoryService.findById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(transactionDetail);
   }
 }

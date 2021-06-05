@@ -2,6 +2,7 @@ package com.banking.transcation.controller.exceptionhandler;
 
 import com.banking.transcation.controller.dto.ErrorResponse;
 import com.banking.transcation.exception.InvalidDateRangeException;
+import com.banking.transcation.exception.NoTransactionFoundException;
 import com.banking.transcation.exception.UnknownTransactionTypeException;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.encoder.org.apache.commons.lang3.exception.ExceptionUtils;
@@ -16,8 +17,7 @@ import javax.validation.ConstraintViolationException;
 
 import java.time.format.DateTimeParseException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @ControllerAdvice
@@ -64,10 +64,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .body(new ErrorResponse("Error Occurred while fetching transaction-history", rootCauseMessage));
   }
 
+  @ExceptionHandler(NoTransactionFoundException.class)
+  public ResponseEntity<ErrorResponse> handle(NoTransactionFoundException e) {
+    String rootCauseMessage = ExceptionUtils.getRootCauseMessage(e);
+    log.error(String.format("No transaction found: %s", rootCauseMessage));
+    return ResponseEntity.status(NOT_FOUND).body(new ErrorResponse("Record not found", e.getMessage()));
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handle(Exception e) {
     String rootCauseMessage = ExceptionUtils.getRootCauseMessage(e);
     log.error(String.format("Unknown error: %s", rootCauseMessage));
-    return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("Unknown error: %s", rootCauseMessage));
+    return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("Unknown error", rootCauseMessage));
   }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionHistoryRepository  extends CrudRepository<TransactionDetailEntity, String> {
 
@@ -27,4 +28,6 @@ public interface TransactionHistoryRepository  extends CrudRepository<Transactio
   List<TransactionDetailEntity> findByUserIdAndOptionalTypeFilter(
       @Param("userId") String userId,
       @Param("type") String valueInString);
+
+  Optional<TransactionDetailEntity> findById(String id);
 }
