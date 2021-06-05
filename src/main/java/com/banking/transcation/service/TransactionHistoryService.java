@@ -1,20 +1,12 @@
 package com.banking.transcation.service;
 
+import com.banking.transcation.service.model.DateRange;
 import com.banking.transcation.repository.TransactionHistoryRepository;
-import com.banking.transcation.repository.entity.TransactionDetailEntity;
 import com.banking.transcation.service.model.TransactionDetail;
-import org.jetbrains.annotations.NotNull;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.spi.MappingContext;
+import com.banking.transcation.service.model.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +17,17 @@ public class TransactionHistoryService {
   TransactionHistoryRepository transactionHistoryRepository;
 
   @Autowired
-  TransactionModelMapper modelMapper;
+  TransactionDetailModelMapper transactionDetailModelMapper;
 
-  public List<TransactionDetail> get(String userId) {
-    return transactionHistoryRepository.findByUserId(userId).stream()
+  public List<TransactionDetail> get(String userId, TransactionType type, DateRange dateRange) {
+    return transactionHistoryRepository
+        .findByUserIdAndOptionalFilters(userId,
+            dateRange.getStartDate(),
+            dateRange.getEndDate(),
+            TransactionType.getValueInString(type))
+        .stream()
         .map(transactionDetailEntity ->
-    modelMapper.map(transactionDetailEntity))
+            transactionDetailModelMapper.map(transactionDetailEntity))
         .collect(Collectors.toList());
   }
 }
